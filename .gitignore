@@ -8,3 +8,8 @@
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+
+###> Project ###
+.idea
+docker/postgres/data
+###< Project ###

@@ -1,0 +1,55 @@
+version: '3.8'
+services:
+  nginx:
+    container_name: ${NGINX_HOST}
+    build:
+      args:
+        VERSION: ${NGINX_VERSION}
+      context: ./nginx
+    depends_on:
+      - phpfpm
+    ports:
+      - ${NGINX_PORT}:80
+    volumes:
+      - ./../:/app:delegated
+      - ./../var/cache
+
+  phpfpm:
+    container_name: ${PHPFPM_HOST}
+    build:
+      args:
+        VERSION: ${PHPFPM_VERSION}
+      context: ./phpfpm
+    depends_on:
+      - postgres
+    ports:
+      - ${PHPFPM_PORT}:9000
+    volumes:
+      - ./../:/app:delegated
+      - ./../var/cache
+
+  postgres:
+    container_name: ${POSTGRES_HOST}
+    build:
+      args:
+        VERSION: ${POSTGRES_VERSION}
+      context: ./postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+    volumes:
+      - ${POSTGRES_DATA}:/var/lib/postgresql/data:delegated
+
+  adminer:
+    image: wodby/adminer
+    container_name: ${ADMINER_HOST}
+    environment:
+      ADMINER_DEFAULT_DB_DRIVER: pgsql
+      ADMINER_DEFAULT_DB_HOST: ${POSTGRES_HOST}
+      ADMINER_DEFAULT_DB_NAME: ${POSTGRES_DATABASE}
+      ADMINER_DESIGN: nette
+      ADMINER_PLUGINS: tables-filter tinymce
+    ports:
+      - ${ADMINER_PORT}:9000
+
