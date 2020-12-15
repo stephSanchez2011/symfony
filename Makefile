@@ -42,10 +42,6 @@ database-reset:
 
 docker-hard-reset: ## Supprime tout container, volume, image...
 	docker stop $$(docker ps -a -q); docker rm $$(docker ps -a -q); docker volume rm $$(docker volume ls -qf dangling=true); docker rmi $$(docker images -q) --force
-	rm -rf back/vendor/*
-	rm -rf back/var/cache/*
-	rm -rf back/var/log/*
-	rm -rf back/var/sessions/*
 
 # --------------------------------------------------------------------
 # COMPOSER

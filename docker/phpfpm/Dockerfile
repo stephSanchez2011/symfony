@@ -15,7 +15,7 @@ RUN pecl install xdebug && \
 ## Copy php default configuration
 COPY default.ini /usr/local/etc/php/conf.d/default.ini
 
-WORKDIR /back
+WORKDIR /app
 
 ## Install composer
 RUN wget https://getcomposer.org/installer && \
